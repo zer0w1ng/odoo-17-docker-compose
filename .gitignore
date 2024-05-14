@@ -3,5 +3,10 @@ etc/odoo-server.log
 etc/sessions/
 etc/filestore/
 
+*.pyc
+*.*.pyc
+*.pyo
+__pycache__/*
+
 ;etc/addons/
 ez_addons/
