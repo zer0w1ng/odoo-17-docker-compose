@@ -10,3 +10,4 @@ __pycache__/*
 
 ;etc/addons/
 ez_addons/
+addons/
