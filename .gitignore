@@ -1,5 +1,6 @@
 postgresql/
 etc/odoo-server.log
+etc/*.conf
 etc/sessions/
 etc/filestore/
 
@@ -11,3 +12,5 @@ __pycache__/*
 ;etc/addons/
 ez_addons/
 addons/
+src/
+
