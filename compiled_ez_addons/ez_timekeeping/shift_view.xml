@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="tree_shift" model="ir.ui.view">
+      <field name="name">tree_shift</field>
+      <field name="model">ez.shift</field>
+      <field name="arch" type="xml">
+        <tree string="Shifts">
+          <field name="name"/>
+          <field name="minimum_ot_minutes"/>
+          <field name="late_allowance_minutes"/>
+          <field name="flex_time"/>
+          <field name="auto_auth"/>
+          <!-- <field name="employee_ids"/> -->
+          <field name="note"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="form_shift" model="ir.ui.view">
+      <field name="name">form_shift</field>
+      <field name="model">ez.shift</field>
+      <field name="arch" type="xml">
+
+        <form string="Shift">
+          <field name="invisible_sched" invisible="1"/>
+          <header>
+            <button name="create_details" string="Auto-fill Schedule"
+              invisible="invisible_sched"
+              type="object" groups="ez_timekeeping.group_timekeeping_manager"/>
+          </header>
+
+          <sheet>
+
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only"/>
+              <h1>
+                <field name="name" required="1" placeholder="eg. Morning 6AM-2PM"/>
+              </h1>
+            </div> 
+
+            <group>
+              <group>
+                <field name="default_schedule" invisible="invisible_sched"/>
+                <field name="minimum_ot_minutes" invisible="invisible_sched"/>
+                <field name="late_allowance_minutes" invisible="flex_time or invisible_sched"/>
+              </group>
+              <group>
+                <field name="flex_time" invisible="invisible_sched"/>
+                <field name="auto_auth" invisible="invisible_sched"/>
+              </group>
+            </group>
+
+            <notebook>
+
+              <page string="Schedule" name="schedule" invisible="invisible_sched">
+                <field name="details">
+                  <form>
+                    <group>
+                      <group>
+                        <field name="day"/>
+                        <field name="schedule"/>
+                      </group>
+                      <group>
+                        <field name="day_off"/>
+                        <!--
+                        <field name="ot_day"/>
+                        -->
+                      </group>
+                    </group>
+                  </form>
+                  <tree editable="bottom">
+                    <field name="day"/>
+                    <field name="schedule"/>
+                    <field name="day_off"/>
+                    <!--
+                    <field name="ot_day"/>
+                    -->
+                  </tree>
+                </field>
+              </page>
+
+              <!-- <page string="Employees">
+                <field name="employee_ids" readonly="1"/>
+              </page> -->
+
+              <page string="Notes" name="notes">
+                <field name="note"/>
+              </page>
+            </notebook>
+
+          </sheet>
+
+        </form>
+
+      </field>
+    </record>
+
+
+    <record id="open_shift" model="ir.actions.act_window">
+      <field name="name">Shifts</field>
+      <field name="res_model">ez.shift</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Click to create a shift.
+        </p>
+      </field>
+    </record>
+
+    <menuitem
+      id="menu_shift"
+      parent="menu_timekeeping_config"
+      action="open_shift"
+      groups="group_timekeeping_user"
+      sequence="10" />
+
+    <!-- =========================================================== -->
+
+    <record id="view_employees_shift" model="ir.ui.view">
+      <field name="name">open_employees_shift</field>
+      <field name="model">hr.employee</field>
+      <field name="priority" eval="100"/>
+      <field name="arch" type="xml">
+        <tree string="Employees Shift" create="0" delete="0" editable="bottom"
+          default_order="identification_id"
+        >
+          <field name="identification_id" readonly="1"/>
+          <field name="name" readonly="1"/>
+          <field name="shift_id"/>
+          <field name="category_ids" widget="many2many_tags"
+            options="{'color_field': 'color', 'no_create_edit': True}" optional="show"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="open_employees_shift" model="ir.actions.act_window">
+      <field name="name">Shift Assignment</field>
+      <field name="res_model">hr.employee</field>
+      <field name="view_mode">tree</field>
+      <field name="view_id" ref="view_employees_shift"/>
+    </record>
+
+    <menuitem
+      id="menu_employees_shift"
+      parent="hr.menu_human_resources_configuration"
+      action="open_employees_shift"
+      groups="group_timekeeping_user,hr.group_hr_user"
+      sequence="2" />
+
+    <menuitem
+      id="menu_employees_shift2"
+      parent="menu_timekeeping_config"
+      action="open_employees_shift"
+      groups="group_timekeeping_user,hr.group_hr_user"
+      sequence="11" />
+
+</odoo>

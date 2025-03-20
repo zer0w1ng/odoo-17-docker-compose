@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2021
+======================================== -->
+<odoo>
+  <data>
+
+    <!-- <function model="res.partner" name="change_odoo_bot"/> -->
+
+    <record id="decimal_pay_unit" model="decimal.precision">
+      <field name="name">Payslip Line Unit</field>
+      <field name="digits">4</field>
+    </record>
+
+    <record id="decimal_pay_amount" model="decimal.precision">
+      <field name="name">Payroll Amount</field>
+      <field name="digits">2</field>
+    </record>
+
+
+  </data>
+
+</odoo>

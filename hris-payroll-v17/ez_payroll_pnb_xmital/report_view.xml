@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- transmittal -->
+  <report
+    string="PNB Transmittal"
+    id="pnb_transmittal"
+    model="hr.ph.payroll"
+    report_type="qweb-pdf"
+    name="ez_payroll_pnb_xmital.report_pnb_transmittal"
+    file="ez_payroll_pnb_xmital.report_pnb_transmittal"
+    attachment_use="False"
+  />
+
+  <template id="report_pnb_transmittal">
+    <t t-call="web.html_container">
+      <t t-foreach="docs" t-as="o">
+        <t t-call="web.external_layout">
+
+          <t t-set="total" t-value="0.0"/>
+          <t t-set="tcount" t-value="0"/>
+          <t t-foreach="o.payslip" t-as="ps">
+            <t t-if="ps.net_pay>0.0">
+              <t t-set="total" t-value="total+ps.net_pay"/>
+              <t t-set="tcount" t-value="tcount+1"/>
+            </t>
+          </t>
+
+          <div class="page">
+
+            <t t-if="o.state=='draft'">
+              <div style="color:red">
+                <strong>DRAFT! DO NOT USE.</strong>
+              </div>
+            </t>
+
+            <t t-set="cdate" t-value="o.pnb_posting_date"/>
+            <div style="padding-left:65px;padding-right:65px">
+              <br/>
+              <t t-raw="cdate.strftime('%B %d, %Y')"/><br/>
+              <br/>
+              <strong>PHILIPPINE NATIONAL BANK</strong><br/>
+              <span t-field="o.company_id.pnb_branch_address"/>
+              <br/>
+              <br/>
+              Attention: <strong>PAYROLL-IN-CHARGE</strong><br/>
+              <br/>
+              <p style="text-align:justify;">
+                This is to authorize the transfer of funds from <span t-field="o.company_id.pnb_account_name_number"/>
+                the sum of <t t-raw="o.amount_to_words(total).upper().strip()"/>
+                (PHP <t t-raw="'{:,.2f}'.format(total)"/>) to <t t-raw="'{:,}'.format(tcount)"/>
+                individual accounts listed below:
+              </p>
+
+              <div style="font-size:10">
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th>Trans.<br/>Code</th>
+                      <th>Comp.<br/>Code</th>
+                      <th>Date</th>
+                      <th class="text-right">Amount</th>
+                      <th>Account No.</th>
+                      <th>Last Name</th>
+                      <th>First Name</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr t-foreach="o.payslip" t-as="ps">
+                      <t t-if="ps.net_pay>0.0">
+                        <td>
+                          52
+                        </td>
+                        <td>
+                          <t t-raw="o.pnb_company_code"/>
+                        </td>
+                        <td>
+                          <t t-raw="cdate.strftime('%m/%d/%Y')"/><br/>
+                        </td>
+                        <td class="text-right">
+                          <span t-field="ps.net_pay"/>
+                        </td>
+                        <td>
+                          <span t-field="ps.employee_id.atm_no"/>
+                        </td>
+                        <td>
+                          <span t-field="ps.employee_id.last_name"/>
+                        </td>
+                        <td>
+                          <span t-field="ps.employee_id.first_name"/>
+                        </td>
+                      </t>
+                    </tr>
+                    <tr>
+                      <td>
+                        99
+                      </td>
+                      <td>
+                        <t t-raw="o.pnb_company_code"/>
+                      </td>
+                      <td>
+                        <t t-raw="cdate.strftime('%m/%d/%Y')"/><br/>
+                      </td>
+                      <td class="text-right">
+                        <t t-raw="'{:,.2f}'.format(total)"/><br/>
+                      </td>
+                      <td> </td>
+                      <td> </td>
+                      <td> </td>
+                      <td> </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <br/>
+                Very truly yours, <br/>
+                <br/>
+                <br/>
+                <strong><span t-field="o.company_id.pnb_signatory"/></strong><br/>
+                <span t-field="o.company_id.pnb_signatory_position"/>
+
+              </div>
+
+            </div>
+
+          </div>
+        </t>
+      </t>
+    </t>
+  </template>
+
+</odoo>

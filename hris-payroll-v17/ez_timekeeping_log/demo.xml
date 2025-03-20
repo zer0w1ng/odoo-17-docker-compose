@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2022
+======================================== -->
+<odoo>
+  <data noupdate="1">
+
+    <function model="ez.time.log" name="gen_demo_logs"/>
+    <!--
+    <function id="demo_tc" model="ez.time.card" name="_create_demo"/>
+    -->
+  </data>
+</odoo>

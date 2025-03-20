@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2021
+======================================== -->
+<odoo>
+
+  <record id="view_employee_filter_inherit" model="ir.ui.view">
+    <field name="name">view_employee_filter_inherit</field>
+    <field name="model">hr.employee</field>
+    <field name="inherit_id" ref="hr.view_employee_filter"/>
+    <field name="arch" type="xml">
+      <field name="name" position="after">
+        <field name="identification_id"/>
+      </field>
+
+      <xpath expr="//filter[@name='inactive']" position="before">
+        <filter string="Hired 5.5 to 6 months before" name="hired_56"
+          domain="[('hired', '&lt;=', (context_today()-relativedelta(months=6)+relativedelta(days=15)).strftime('%Y-%m-%d')),('hired', '&gt;=', (context_today()-relativedelta(months=6)).strftime('%Y-%m-%d'))]"/>
+        <separator/>
+      </xpath>
+
+    </field>
+  </record>
+
+  <record id="ez_hr_inherit" model="ir.ui.view">
+    <field name="name">hr.employee.form.inherit</field>
+    <field name="model">hr.employee</field>
+    <field name="inherit_id" ref="hr.view_employee_form"/>
+    <field name="arch" type="xml">
+
+        <!-- Fix formatting -->
+        <!-- <xpath expr="//div[@class='oe_title']" position="attributes">
+          <attribute name="style">width:50%;</attribute>
+        </xpath> -->
+
+        <field name="identification_id" position="replace"/>
+        <field name="ssnid" position="replace"/>
+        <field name="passport_id" position="replace"/>
+        <field name="bank_account_id" position="replace"/>
+        <group name="emergency" position="replace"/>
+
+        <xpath expr="//page[@name='personal_information']/group/group[1]" position="after">
+          <group string="Identification Numbers">
+            <field name="identification_id" string="Company ID"/>
+            <field name="tin_no"/>
+            <field name="sss_no"/>
+            <field name="phic_no"/>
+            <field name="pagibig_no"/>
+            <field name="atm_no"/>
+            <field name="hmo_no"/>
+            <field name="passport_id"/>
+            <field name="bank_account_id"/>
+          </group>
+          <group string="Hiring Info">
+            <field name="hired"/>
+            <field name="date_end"/>
+            <field name="regularization_date"/>
+            <field name="years_service"/>
+            <field name="employment_status"/>
+            <field name="separation_reason"/>
+          </group>
+        </xpath>
+
+        <field name="children" position="after">
+          <separator name="separator_emergency" string="Emergency"/> 
+          <field name="emergency_contact"/>
+          <field name="emergency_phone" class="o_force_ltr"/>        
+        </field>
+
+
+        <field name="birthday" position="after">
+          <field name="age"/>
+        </field>
+
+        <field name="emergency_contact" position="after">
+          <field name="emergency_address" string="Address"/>
+          <field name="emergency_relation" string="Relationship"/>
+        </field>
+
+        <field name="private_phone" position="after">
+          <!-- <field name="personal_email"/>
+          <field name="home_address"/> -->
+          <!-- <field name="home_zip"/> -->
+          <field name="provincial_address"/>
+          <field name="provincial_zip"/>
+        </field>
+
+        <field name="country_of_birth" position="after">
+          <field name="with_nbi"/>
+        </field>
+
+        <!-- <field name="country_id" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </field>
+
+        <field name="country_id" position="after">
+          <field name="nationality"/>
+        </field> -->
+
+        <!-- <field name="address_home_id" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </field> -->
+
+        <!-- <field name="bank_account_id" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </field> -->
+
+        <!-- <field name="phone" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </field> -->
+
+        <!-- <field name="private_email" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </field> -->
+
+        <xpath expr="//notebook/page[last()]" position="before">
+
+          <page name="others" string="Other Information" groups="hr.group_hr_user">
+
+              <separator string="Education"/>
+              <field name="educ_line" nolabel="1">
+                  <tree string="Educational Attainment" editable="bottom">
+                      <field name="name"/>
+                      <field name="course"/>
+                      <field name="level"/>
+                      <field name="school_address"/>
+                      <field name="start_date"/>
+                      <field name="end_date"/>
+                      <field name="note"/>
+                  </tree>
+              </field>
+
+              <separator string="Training"/>
+              <field name="training_line" nolabel="1">
+                  <tree string="Training" editable="bottom">
+                      <field name="name"/>
+                      <field name="start_date"/>
+                      <field name="end_date"/>
+                      <field name="bond_expiry"/>
+                      <field name="bond_amount"/>
+                      <field name="note"/>
+                  </tree>
+              </field>
+
+              <separator string="Work Experience"/>
+              <field name="experience_line" nolabel="1">
+                  <tree string="Work Experience" editable="bottom">
+                      <field name="name"/>
+                      <field name="employer"/>
+                      <field name="start_date"/>
+                      <field name="end_date"/>
+                      <field name="note"/>
+                  </tree>
+              </field>
+
+              <separator string="Dependents"/>
+              <field name="dependent_line" nolabel="1">
+                  <tree string="Dependents" editable="bottom">
+                      <field name="name" />
+                      <field name="relation"/>
+                      <field name="birthday"/>
+                      <field name="phone"/>
+                      <field name="qualified"/>
+                      <field name="note"/>
+                  </tree>
+              </field>
+
+              <separator string="Infractions / Violations"/>
+              <field name="infraction_line" nolabel="1">
+                  <tree string="Infractions/Violations" editable="bottom">
+                      <field name="name" />
+                      <field name="date"/>
+                      <field name="penalty"/>
+                      <field name="note"/>
+                  </tree>
+              </field>
+
+              <separator string="Custodianship"/>
+              <field name="custod_line" nolabel="1">
+                  <tree string="Custodianship" editable="bottom">
+                      <field name="name" />
+                      <field name="description"/>
+                      <field name="received"/>
+                      <field name="returned"/>
+                      <field name="note"/>
+                  </tree>
+              </field>
+
+              <separator string="Health Record"/>
+                <field name="health_line" nolabel="1">
+                    <tree string="Health Record">
+                        <field name="date" />
+                        <field name="name" />
+                        <field name="weight"/>
+                        <field name="height"/>
+                        <field name="temp"/>
+                        <field name="bp"/>
+                        <field name="note"/>
+                    </tree>
+                    <form string="Health Records">
+                        <group>
+                            <field name="name"/>
+                            <field name="date"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="weight"/>
+                                <field name="height"/>
+                            </group>
+                            <group>
+                                <field name="temp"/>
+                                <field name="bp"/>
+                            </group>
+                        </group>
+                        <field name="note"/>
+                    </form>
+                </field>
+          </page>
+
+        <page string="Notes">
+            <field name="note"/>
+          </page>
+        </xpath>
+
+        <!-- <xpath expr="//header" position="inside">
+          <button string="Test Check 6mo" 
+            name="check_6month_alarm" 
+            context="{'days_before':15}"
+            groups="base.group_no_one"
+            type="object"/>
+        </xpath> -->
+
+    </field>
+  </record>
+
+  <!-- ################################################### -->
+
+  <record id="tree_employee_56" model="ir.ui.view">
+      <field name="name">tree_employee_56</field>
+      <field name="model">hr.employee</field>
+      <field name="priority">100</field>
+      <field name="arch" type="xml">
+        <tree string="Employees">
+          <field name="name" readonly="1"/>
+          <field name="job_title" optional="show"/>
+          <field name="identification_id" optional="hide"/>
+          <field name="hired"/>
+          <field name="regularization_date" string="Regular" optional="show"/>
+          <field name="company_id" groups="base.group_multi_company" readonly="1" optional="hide"/>
+          <field name="department_id" optional="show"/>
+          <field name="job_id" optional="hide"/>
+          <field name="parent_id" optional="hide"/>
+          <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}" optional="hide"/>
+        </tree>
+      </field>
+  </record>
+
+  <record id="open_view_employee_56" model="ir.actions.act_window">
+    <field name="name">Employees Hired 5.5 to 6 Months Before</field>
+    <field name="res_model">hr.employee</field>
+    <field name="view_mode">tree,form</field>
+    <!-- <field name="view_id" ref="hr.view_employee_tree"/> -->
+    <field name="search_view_id" ref="hr.view_employee_filter"/>
+    <field name="context">{'search_default_hired_56':1}</field>
+    <field name="view_id" ref="tree_employee_56"/>
+  </record>
+
+  <menuitem
+    id="menu_hr_employee_56"
+    action="open_view_employee_56"
+    parent="hr.menu_hr_employee_payroll"
+    groups="hr.group_hr_user"
+    sequence="20"/>
+
+  <!-- CRON ############################### -->
+  <data noupdate="1">
+    <record forcecreate="True" id="ir_cron_check_6month_alarm" model="ir.cron">
+        <field name="name">Check employees hired before 5.5 to 6 months</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">model.check_6month_alarm()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field eval="True" name="doall"/>
+        <field eval="False" name="active"/>
+    </record>
+  </data>
+
+
+  <!-- ######################################################## -->
+
+  <record id="view_employee_category_list_inh" model="ir.ui.view">
+    <field name="name">view_employee_category_list_inh</field>
+    <field name="model">hr.employee.category</field>
+    <field name="inherit_id" ref="hr.view_employee_category_list"/>
+    <field name="arch" type="xml">
+
+      <xpath expr="//tree" position="replace">
+        <tree>
+          <field name="name"/>
+          <field name="employee_ids"/>
+        </tree>
+      </xpath>
+
+    </field>
+  </record>
+
+
+  <record id="view_employee_category_form_inh" model="ir.ui.view">
+    <field name="name">view_employee_category_form_inh</field>
+    <field name="model">hr.employee.category</field>
+    <field name="inherit_id" ref="hr.view_employee_category_form"/>
+    <field name="arch" type="xml">
+
+      <xpath expr="//sheet" position="inside">
+          <field name="employee_ids"/>
+      </xpath>
+
+    </field>
+  </record>
+
+  <!-- Remove private info on My Profile -->
+  <record id="res_users_view_form_profile_inh" model="ir.ui.view">
+    <field name="name">res_users_view_form_profile_inh</field>
+    <field name="model">res.users</field>
+    <field name="inherit_id" ref="hr.res_users_view_form_profile"/>
+    <field name="arch" type="xml">
+
+      <xpath expr="//page[@name='personal_information']" position="replace">
+      </xpath>
+
+      <xpath expr="//page[@name='hr_settings']" position="replace"/>
+
+    </field>
+  </record>
+
+</odoo>

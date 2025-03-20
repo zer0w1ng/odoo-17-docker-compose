@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+Regulus Berdin
+rberdin@gmail.com
+(c) 2024
+======================================== -->
+<odoo>
+
+    <record model="ir.ui.view" id="hr_kanban_view_applicant_inh">
+        <field name="name">hr_kanban_view_applicant_inh</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_kanban_view_applicant"/>
+        <field name="arch" type="xml">
+            <field name="application_status" position="after">
+                <field name="ticket_number"/>
+            </field>
+            <xpath expr="//div[hasclass('o_kanban_record_headings')]" position="inside">
+                <div class="o_kanban_record_subtitle" invisible="ticket_number=='/'">
+                    Ticket : <field name="ticket_number"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_applicant_view_form_inh">
+        <field name="name">hr_applicant_view_form_inh</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
+        <field name="arch" type="xml">
+            <button name="archive_applicant" position="before">
+                <field name="ticket_number" invisible="1"/>
+                <button string="Create Queue Number" name="acion_queue_applicant" type="object" class="oe_highlight"
+                    invisible="(not active) or (not ticket_number=='/')" data-hotkey="q"/>
+                <!-- <button string="Test Websocket" name="test_websocket" type="object"/> -->
+            </button>
+            <field name="type_id" position="after">
+                <field name="ticket_number"/>
+                <field name="new_datetime"/>
+                <field name="served_datetime"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- ################################################################## -->
+
+    <record model="ir.actions.server" id="open_queue_display">
+        <field name="name">Queue Display</field>
+        <field name="model_id" ref="hr_recruitment.model_hr_applicant"/>
+        <field name="binding_model_id" ref="hr_recruitment.model_hr_applicant"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model._action_open_queue_display()
+        </field>
+        <field name="groups_id" eval="[(4, ref('hr_recruitment.group_hr_recruitment_manager'))]"/>
+    </record>
+
+    <menuitem id="menu_queue_display" 
+        name="Queue Display" 
+        action="open_queue_display"
+        sequence="12"
+        groups="hr_recruitment.group_hr_recruitment_manager"
+        parent="hr_recruitment.menu_hr_recruitment_root"/>
+
+    <record model="ir.actions.server" id="open_kiosk">
+        <field name="name">Kiosk</field>
+        <field name="model_id" ref="hr_recruitment.model_hr_applicant"/>
+        <field name="binding_model_id" ref="hr_recruitment.model_hr_applicant"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model._action_open_kiosk()
+        </field>
+        <field name="groups_id" eval="[(4, ref('hr_recruitment.group_hr_recruitment_manager'))]"/>
+    </record>
+
+    <menuitem id="menu_kiosk" 
+        name="Kiosk" 
+        action="open_kiosk"
+        sequence="11"
+        groups="hr_recruitment.group_hr_recruitment_manager"
+        parent="hr_recruitment.menu_hr_recruitment_root"/>
+
+
+    <record id="open_queue_controller" model="ir.actions.act_window">
+        <field name="name">Queue Controller</field>
+        <field name="res_model">ez.wiz.queue_controller</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="tree_variance_wiard" model="ir.ui.view">
+        <field name="name">tree_variance_wiard</field>
+        <field name="model">ez.wiz.queue_controller</field>
+        <field name="arch" type="xml">
+            <form>
+                <center>
+                    <div style="padding: 5px;">
+                        <button type="object" name="action_next_queue" class="oe_highlight">
+                            <center>
+                                <div style="line-height: 50px; height: 50px; width: 200px;">
+                                    Process Next
+                                </div>
+                            </center>
+                        </button>
+                    </div>
+                    <div style="padding: 5px;">
+                        <button type="object" name="action_previous_queue">
+                            <center>
+                                <div style="line-height: 50px; height: 50px; width: 200px;">
+                                    Revert Previous
+                                </div>
+                            </center>
+                        </button>
+                    </div>
+                    <div style="padding: 5px;">
+                        <button type="object"
+                            confirm="Warning! This will erase all the pending queues and reset the ticket numbers." 
+                            name="action_reset_queue">
+                            <center>
+                                <div style="line-height: 50px; height: 50px; width: 200px;">
+                                    Reset Queue
+                                </div>
+                            </center>
+                        </button>
+                    </div>
+                </center>
+                <footer>
+                    <button string="Close" class="oe_highlight" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_queue_controller" 
+        name="Queue Controller" 
+        action="open_queue_controller"
+        sequence="13"
+        groups="hr_recruitment.group_hr_recruitment_manager"
+        parent="hr_recruitment.menu_hr_recruitment_root"/>
+
+    <!-- ################################################################## -->
+
+    <data noupdate="1">
+        <record id="ir_sequence_ticket_number" model="ir.sequence">
+            <field name="name">Recruitment Ticket Number</field>
+            <field name="code">ez_recruitment_queue.ticket.sequence</field>
+            <field name="prefix"></field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+
+</odoo>

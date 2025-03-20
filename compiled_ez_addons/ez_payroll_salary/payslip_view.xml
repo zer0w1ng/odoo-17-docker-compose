@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2022
+======================================== -->
+<odoo>
+
+  <record id="view_payslip_form_inh" model="ir.ui.view">
+    <field name="name">hr.ph.payslip.form.inh</field>
+    <field name="model">hr.ph.payslip</field>
+    <field name="inherit_id" ref="ez_payroll.view_payslip_form"/>
+    <field name="arch" type="xml">
+
+      <xpath expr="//field[@name='pay_computation_line']/tree/field[@name='factor']" position="after">
+        <field name="salary_rate" optional="hide"/>
+        <field name="salary_rate_period" optional="hide"/>
+      </xpath>
+
+      <xpath expr="//field[@name='pay_computation_line']/tree/field[@name='name']" position="after">
+        <field name="campaign" optional="show"/>
+      </xpath>
+
+      <!-- <xpath expr="//field[@name='pay_computation_line']/form/field[@name='amount']" position="before">
+        <label for="salary_rate" string="Salary"/>
+        <div>
+          <field name="salary_rate" class="oe_inline" readonly="1"/>&#x2063;
+          <field name="salary_rate_period" nolabel="1" readonly="1" class="oe_inline"/>
+        </div>
+      </xpath> -->
+
+    </field>
+  </record>
+
+</odoo>

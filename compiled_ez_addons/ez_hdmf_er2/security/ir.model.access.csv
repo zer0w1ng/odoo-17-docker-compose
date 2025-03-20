@@ -1,0 +1,3 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_hdmf_er2,access_hdmf_er2,model_ez_hdmf_er2,ez_payroll.group_hr_payroll_user,1,1,1,1
+access_hdmf_er2_line,access_hdmf_er2_line,model_ez_hdmf_er2_line,ez_payroll.group_hr_payroll_user,1,1,1,1

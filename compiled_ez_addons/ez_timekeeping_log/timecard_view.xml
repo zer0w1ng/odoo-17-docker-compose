@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2022
+======================================== -->
+
+<odoo>
+  <record id="form_timecard_inherit" model="ir.ui.view">
+    <field name="name">form_timecard_inherit</field>
+    <field name="model">ez.time.card</field>
+    <field name="inherit_id" ref="ez_timekeeping.form_timecard"/>
+    <field name="arch" type="xml">
+
+      <button name="del_time_lines" position="after">
+        <button name="fill_from_time_logs" string="Fill Time Logs"
+          invisible="state not in ('draft')" type="object"/>
+        <button name="del_from_time_logs" string="Delete Time Logs"
+          invisible="state not in ('draft')" type="object"/>
+      </button>
+
+    </field>
+  </record>
+</odoo>

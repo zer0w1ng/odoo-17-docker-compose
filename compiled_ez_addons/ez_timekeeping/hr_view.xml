@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_employee_form_inherit" model="ir.ui.view">
+        <field name="name">view_employee_form_inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+          <field name="resource_calendar_id" position="before">
+            <field name="shift_id"/>
+          </field>
+
+          <field name="employee_type" position="before">
+            <field name="exclude_create_timecard"/>
+          </field>
+
+          <xpath expr="//group[@name='managers']" position="inside">
+            <field name="timekeeping_manager_id" widget="many2one_avatar_user"/>
+          </xpath>
+            
+          <xpath expr="//group[@name='managers']" position="attributes">
+            <attribute name="invisible">0</attribute>
+          </xpath>
+            
+          <!-- <field name="resource_calendar_id" position="attributes">
+            <attribute name="invisible">1</attribute>
+          </field> -->
+
+        </field>
+      </record>
+</odoo>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2022
+======================================== -->
+<odoo>
+
+  <record id="form_ez_work_summary_sheet_inh" model="ir.ui.view">
+    <field name="name">form_ez_work_summary_sheet_inh</field>
+    <field name="model">ez.work.summary.sheet</field>
+    <field name="inherit_id" ref="ez_payroll.form_ez_work_summary_sheet"/>
+    <field name="arch" type="xml">
+
+      <xpath expr="//field[@name='work_summary_line']/tree/field[@name='work_type_id']" position="after">
+        <field name="campaign" optional="show"/>
+      </xpath>
+
+      <xpath expr="//field[@name='work_summary_line']/tree/field[@name='factor']" position="after">
+        <field name="salary_rate" optional="hide"/>
+        <field name="salary_rate_period" optional="hide"/>
+      </xpath>
+
+    </field>
+  </record>
+
+  <record id="form_ez_work_summary_line_inh" model="ir.ui.view">
+    <field name="name">form_ez_work_summary_line_inh</field>
+    <field name="model">ez.work.summary.line</field>
+    <field name="inherit_id" ref="ez_payroll.form_ez_work_summary_line"/>
+    <field name="arch" type="xml">
+
+      <field name="work_type_id" position="after">
+        <field name="campaign"/>
+      </field>
+
+      <field name="factor" position="after">
+        <field name="salary_rate"/>
+        <field name="salary_rate_period"/>
+      </field>
+
+    </field>
+  </record>
+
+</odoo>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2022
+======================================== -->
+
+<odoo>
+
+  <record id="form_time_logs" model="ir.ui.view">
+    <field name="name">form_time_logs</field>
+    <field name="model">ez.time.log</field>
+    <field name="arch" type="xml">
+      <form>
+<!--
+        <header>
+          <button name="gen_demo_logs" string="Create Demo Logs" type="object"/>
+        </header>
+-->
+        <sheet>
+          <group>
+            <group>
+              <field name="identification_id"/>
+              <field name="employee_name"/>
+              <field name="sync_id"/>
+            </group>
+            <group>
+              <field name="name"/>
+              <field name="time"/>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="tree_time_logs" model="ir.ui.view">
+    <field name="name">tree_time_logs</field>
+    <field name="model">ez.time.log</field>
+    <field name="arch" type="xml">
+      <tree editable="top">
+        <field name="name"/>
+        <field name="time"/>
+        <field name="identification_id"/>
+        <field name="employee_name"/>
+        <field name="sync_id"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="search_time_logs" model="ir.ui.view">
+    <field name="name">search_time_logs</field>
+    <field name="model">ez.time.log</field>
+    <field name="arch" type="xml">
+      <search string="Search">
+        <field name="identification_id"/>
+        <field name="name"/>
+        <field name="time"/>
+        <filter string="Date" name="gdate" context="{'group_by':'name'}"/>
+      </search>
+    </field>
+  </record>
+
+  <record id="open_time_logs" model="ir.actions.act_window">
+    <field name="name">Logs</field>
+    <field name="res_model">ez.time.log</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem
+    id="menu_time_logs"
+    parent="ez_timekeeping.menu_timekeeping_main"
+    groups="ez_timekeeping.group_timekeeping_user"
+    action="open_time_logs"
+    sequence="50"
+  />
+
+</odoo>

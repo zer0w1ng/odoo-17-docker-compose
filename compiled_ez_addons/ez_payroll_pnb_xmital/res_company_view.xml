@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2018
+======================================== -->
+<odoo>
+
+  <record id="view_company_form_inherit2" model="ir.ui.view">
+    <field name="name">view_company_form_inherit2</field>
+    <field name="model">res.company</field>
+    <field name="inherit_id" ref="ez_payroll_pnb_export.view_company_form_inherit"/>
+    <field name="arch" type="xml">
+
+      <field name="pnb_branch_code" position="before">
+        <field name="pnb_branch_address"/>
+        <field name="pnb_account_name_number"/>
+        <field name="pnb_signatory"/>
+        <field name="pnb_signatory_position"/>
+      </field>
+
+    </field>
+  </record>
+
+</odoo>

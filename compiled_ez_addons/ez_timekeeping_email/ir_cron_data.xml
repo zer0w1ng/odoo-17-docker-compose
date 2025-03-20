@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2022
+======================================== -->
+<odoo>
+    <record id="email_approval_cron" model="ir.cron">
+        <field name="name">Timekeeping Email: Check Approval E-mails</field>
+        <field name="model_id" ref="model_ez_time_card"/>
+        <field name="state">code</field>
+        <field name="code">model.check_approval_email()</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+    </record>
+</odoo>

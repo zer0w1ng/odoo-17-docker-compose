@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2023
+======================================== -->
+<odoo>
+
+  <record id="view_payroll_form_inh" model="ir.ui.view">
+    <field name="name">view_payroll_form_inh</field>
+    <field name="model">hr.ph.payroll</field>
+    <field name="inherit_id" ref="ez_payroll.view_payroll_form"/>
+    <field name="arch" type="xml">
+      <page name="info" position="after">
+        <page name="adjustment" string="Adjustment">
+          <group>
+            <group>
+              <field name="no_gmb" states="draft"/>
+              <!-- <button string="Delete SSS, PHIC and HDMF" name="remove_gmb"/> -->
+            </group>
+          </group>
+        </page>
+      </page>
+    </field>
+  </record>
+
+</odoo>

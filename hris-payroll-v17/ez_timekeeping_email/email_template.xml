@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2022
+======================================== -->
+<odoo>
+
+  <data>
+
+    <record id="email_approval_template" model="mail.template">
+      <field name="name">E-Mail Approval Template</field>
+      <field name="model_id" ref="ez_timekeeping.model_ez_time_card"/>
+      <field name="email_from">{{object.sender_email}}</field>
+      <field name="email_to">{{object.approver_email}}</field>
+      <field name="subject">Time Card of {{object.name}}</field>
+      <field name="auto_delete" eval="False"/>
+      <field name="body_html" type="html">
+<style>
+  .bb {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  .bbc {
+    padding-right: 10px;
+    padding-left: 10px;
+    text-align: center;
+  }
+</style>      
+
+<div style="margin: 0px; padding: 0px;">
+  <p>
+    <b>TIME RECORD APPROVAL EMAIL - <t t-out="object.name">John Doe</t></b>
+  </p>
+  <p>Note: This is a system generated time record approval email.</p>
+  <p>
+    Please reply to this email with the word <b>APPROVE</b> on the top and first line of the message to approve it.<br/>
+    Or reply with the word <b>DENY</b> on the top and first line to deny it.
+  </p>
+  <p>Denied time record with be again editable by the employee and can be re-submitted for approval.</p>
+
+  <hr/>
+
+  <table border="0" cellpadding="2px" cellspacing="0" style="background-color: while; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+  <!-- <table> -->
+    <tr>
+      <td class="bb" style="min-width:100px;">
+        <b>Employee:</b>
+      </td>
+      <td class="bb" width="50%">
+        <t t-out="object.employee_id.name">John Doe.</t>
+      </td>
+      <td class="bb" align="right" style="min-width:75px;">
+        <b>Shift:</b>
+      </td>
+      <td class="bb" style="white-space: nowrap;" width="50%">
+        <t t-out="object.shift_id.name">Day Shift</t>
+      </td>
+    </tr>
+    <tr>
+      <td class="bb">
+        <b>Date:</b>
+      </td>
+      <td class="bb">
+        <t t-out="format_date(object.date1) or ''">Jan 1, 2022</t> 
+        to <t t-out="format_date(object.date2) or ''">Jan 15, 2022</t>
+      </td>
+    </tr>
+  </table>
+
+  <hr/>
+
+  <table border="0" cellpadding="0" cellspacing="0" style="background-color: while; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+  <!-- <table style="border-collapse: collapse;"> -->
+    <tr>
+      <td class="bb"><b>Date</b></td>
+      <td class="bb"><b>Schedule</b></td>
+      <td class="bb"><b>Type</b></td>
+      <td class="bb"><b>Time Log</b></td>
+      <td class="bb" align="center"><b>Auth</b></td>
+      <td class="bb"><b>Normal</b></td>
+      <td class="bb"><b>Overtime</b></td>
+      <td class="bb"><b>Remarks</b></td>
+      <td class="bb"><b>Notes</b></td>
+    </tr>
+
+    <tr t-foreach="object.details" t-as="line">
+      <td class="bb">
+        <t t-out="line.name or ''">07-18 Sun</t>
+      </td>
+      <td class="bb">
+        <t t-out="line.schedule or ''">08:00-11:30 12:30-17:00</t>
+      </td>
+      <td class="bb"><t t-out="line.day_type_name or 'REG'">REG</t></td>
+      <td class="bb"><t t-out="line.timelog or ''">08:00 17:40</t></td>
+      <td class="bb" align="center">
+        <t t-out="line.auth_hrs and '{0:,.4f}'.format(line.auth_hrs) or ''">
+          0.0000
+        </t>
+      </td>
+      <td class="bb">
+        <t t-out="line.vnorm_time or ''">08:00</t>
+      </td>
+      <td class="bb">
+        <t t-out="line.vot_time or ''">00:40</t>
+      </td>
+      <td class="bb">
+        <t t-out="line.vremarks or ''">Overtime</t>
+      </td>
+      <td class="bb">
+        <t t-out="line.note or ''">note....</t>
+      </td>
+    </tr>
+  </table>
+  <hr/>
+  <b>SUMMARY:</b>
+  <table border="0" cellpadding="0" cellspacing="0" style="background-color: while; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+    <tbody>
+      <tr>
+        <td class="bbc"><b>Day Type</b></td>
+        <td class="bbc"><b>Normal Time</b></td>
+        <td class="bbc"><b>Night</b></td>
+        <td class="bbc"><b>Overtime</b></td>
+        <td class="bbc"><b>Overtime Night</b></td>
+        <td class="bbc"><b>Late</b></td>
+        <td class="bbc"><b>Undertime</b></td>
+        <td class="bbc"><b>Absent</b></td>
+      </tr>
+      <tr t-foreach="object.summary" t-as="s">
+        <td class="bbc"><t t-out="s.name or ''">Regular</t></td>
+        <td class="bbc"><t t-out="s.norm or ''">11d 7h 46m</t></td>
+        <td class="bbc"><t t-out="s.norm_night or ''">1h</t></td>
+        <td class="bbc"><t t-out="s.ot or ''">44m </t></td>
+        <td class="bbc"><t t-out="s.ot_night or ''">1m</t></td>
+        <td class="bbc"><t t-out="s.late or ''">15m</t></td>
+        <td class="bbc"><t t-out="s.undertime or ''">2h</t></td>
+        <td class="bbc"><t t-out="s.absent or ''">3d 2h</t></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+      </field>
+    </record>
+
+  </data>
+
+</odoo>

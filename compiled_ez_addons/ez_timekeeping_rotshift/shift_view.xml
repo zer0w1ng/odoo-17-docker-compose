@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2021
+======================================== -->
+<odoo>
+
+  <record id="form_shift_inherit" model="ir.ui.view">
+      <field name="name">form_shift_inherit</field>
+      <field name="model">ez.shift</field>
+      <field name="inherit_id" ref="ez_timekeeping.form_shift"/>
+      <field name="arch" type="xml">
+
+        <field name="late_allowance_minutes" position="after">
+          <field name="is_rotate_shift"/>
+          <field name="rotate_date_start"
+            invisible="not invisible_sched"
+            string="Rot. Date Start"/>
+        </field>
+
+        <page name="schedule" position="after">
+          <page name="schedule"
+            string="Rotating Shift Schedule"
+            invisible="not invisible_sched"
+          >
+            <field name="rotate_ids">
+              <tree editable="bottom" class="ez_payroll_tree">
+                <field name="shift_id" column_invisible="1"/>
+                <field name="sequence" widget="handle"/>
+                <field name="line_shift_id" domain="[('is_rotate_shift','=',False),('id','!=',shift_id)]"/>
+                <field name="days"/>
+                <field name="note"/>
+              </tree>
+              <form>
+                <group>
+                  <field name="sequence"/>
+                  <field name="line_shift_id"/>
+                  <field name="days"/>
+                  <field name="note"/>
+                </group>
+              </form>
+            </field>
+          </page>
+        </page>
+
+      </field>
+    </record>
+
+</odoo>

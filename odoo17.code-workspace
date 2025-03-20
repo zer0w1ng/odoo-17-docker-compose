@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "ez_addons"
+		},
+		{
+			"path": "addons/ez_ferry"
+		},
+		{
+			"path": "../../../home/rberdin/src/odoo"
+		}
+	]
+}

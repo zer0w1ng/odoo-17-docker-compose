@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="view_payroll_form_inherit" model="ir.ui.view">
+    <field name="name">view_payroll_form_inherit</field>
+    <field name="model">hr.ph.payroll</field>
+    <field name="inherit_id" ref="ez_payroll.view_payroll_form"/>
+    <field name="arch" type="xml">
+
+      <page name="info" position="inside">
+
+        <group name="g_pnb" string="PNB Files">
+          <field name="pnb_posting_date"/>
+          <field name="pnb_ups_file" filename="pnb_ups_filename"/>
+          <field name="pnb_excel_file" filename="pnb_filename"/>
+          <field name="pnb_filename" invisible="1"/>
+          <field name="pnb_ups_filename" invisible="1"/>
+        </group>
+      </page>
+
+      <button name="cancel_done" position="before">
+        <button name="create_pnb_excel_file" states="done" type="object"
+          class="oe_highlight" string="Generate PNB Files"/>
+      </button>
+
+    </field>
+  </record>
+
+</odoo>

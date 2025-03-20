@@ -32,5 +32,6 @@ services:
       - ./addons:/mnt/extra-addons
       - ./ez_addons:/mnt/extra-addons2
       - ./etc:/etc/odoo
+      - ./account-reconcile:/mnt/account-reconcile
     restart: always             # run as a service
-    
+

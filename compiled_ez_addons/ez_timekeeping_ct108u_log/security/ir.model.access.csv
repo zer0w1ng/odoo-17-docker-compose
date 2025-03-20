@@ -1,0 +1,2 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+acc_ez_time_log_ct108u,acc_ez_time_log_ct108u,model_ez_time_log_ct108u,ez_timekeeping.group_timekeeping_manager,1,1,1,1

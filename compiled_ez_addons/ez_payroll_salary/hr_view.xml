@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2022
+======================================== -->
+<odoo>
+
+  <record id="hr_employee_form_inherit" model="ir.ui.view">
+    <field name="name">hr.employee.form.inherit</field>
+    <field name="model">hr.employee</field>
+    <field name="inherit_id" ref="ez_payroll.hr_employee_form_inherit"/>
+    <field name="arch" type="xml">
+
+      <field name="deminimis_line" position="after">
+        <button name="add_salary_line" class="oe_highlight" 
+          string="Add Current Salary" type="object"/>
+        <field name="rate_ok" nolabel="1" 
+          style="color:#F00; padding-left:10px; padding-right:10px;"/>
+        <group string="Salary Rates" colspan="1">
+          <field name="salary_ids" nolabel="1">
+            <tree editable="bottom" class="ez_compensation_tree">
+              <field name="employee_id" invisible="1"/>
+              <field name="date"/>
+              <!-- <field name="campaign"/> -->
+              <field name="salary_rate"/>
+              <field name="salary_rate_period"/>
+              <field name="note"/>
+            </tree>
+            <form>
+              <group>
+                <group>
+                  <field name="date"/>
+                  <!-- <field name="campaign"/> -->
+                  <field name="salary_rate"/>
+                  <field name="salary_rate_period"/>
+                </group>
+                <group>
+                  <field name="note"/>
+                </group>
+              </group>
+            </form>
+          </field>
+        </group>
+      </field>
+
+      <!-- salary rate change format -->
+      <!-- <xpath expr="//group[@name='salary']/group[1]/label" position="replace">
+        <label for="salary_rate" string="Salary Rate"/>
+      </xpath>
+      <xpath expr="//group[@name='salary']/group[1]/div" position="replace">
+        <div>
+          <field name="salary_rate" class="oe_inline"/>&#x2063;
+          <field name="salary_rate_period" nolabel="1" class="oe_inline"/>
+          <button name="add_salary_line" class="oe_link" string="Add" type="object"/>
+        </div>
+      </xpath> -->
+
+    </field>
+  </record>
+
+</odoo>

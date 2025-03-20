@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2022
+======================================== -->
+<odoo>
+  <record id="form_timecard_inh" model="ir.ui.view">
+    <field name="name">form_timecard_inh</field>
+    <field name="model">ez.time.card</field>
+    <field name="inherit_id" ref="ez_timekeeping.form_timecard"/>
+    <field name="arch" type="xml">
+
+      <field name="edit_schedule" position="after">
+        <field name="approver_email"/>
+      </field>
+        
+    </field>
+  </record>
+</odoo>

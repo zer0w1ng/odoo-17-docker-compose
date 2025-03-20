@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<odoo>
+  <data noupdate="0">
+
+  <!-- payroll 
+  <function model="hr.ph.payroll" name="create_demo_data">
+    <value eval="time.strftime('Payroll %Y-%m A')"/>
+    <value eval="time.strftime('%Y-%m-01')"/>
+    <value eval="time.strftime('%Y-%m-15')"/>
+    <value eval="True"/>
+  </function>
+  -->
+
+  </data>
+</odoo>

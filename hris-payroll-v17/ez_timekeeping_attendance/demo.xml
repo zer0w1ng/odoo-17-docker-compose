@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<odoo>
+  <data noupdate="1">
+
+    <function model="hr.attendance" name="create_demo_data"/>
+    <!-- <function model="ez.time.card" name="create_demo_data"/>  -->
+
+  </data>
+</odoo>

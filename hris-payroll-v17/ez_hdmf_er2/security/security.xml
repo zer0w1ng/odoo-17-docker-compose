@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2018
+======================================== -->
+<odoo>
+
+    <record id="hmdf_er2_company_rule" model="ir.rule">
+      <field name="name">HDMF ER2 Company Rule</field>
+      <field name="model_id" ref="model_ez_hdmf_er2"/>
+      <field name="global" eval="True"/>
+      <field name="domain_force">['|',('company_id','=',False),('company_id','in',company_ids)]</field>
+    </record>
+
+</odoo>

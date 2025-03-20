@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+Regulus Berdin
+rberdin@gmail.com
+(c) 2024
+======================================== -->
+<odoo>
+
+    <template id="recruitment_queue_body" name="Recruitment Queue Body">
+        <div class="main-box">
+            <div class="left-box">
+                <div class="title-text">
+                    Next in Line
+                </div>
+                <div class="logo">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo"/>                
+                </div>
+                <div class="hdiv1"/>
+
+                <t t-foreach="range(0,4)" t-as="row">
+                    <div class="next-in-line">
+                        <t t-foreach="range(0,4)" t-as="col">
+                            <t t-if="nl_items[row][col][0]">
+                                <div class="next-in-line-item">
+                                    <!-- <t t-esc="nl_items[row][col][0].ticket_number"/> -->
+                                    <a t-att-href="nl_items[row][col][1]" style="text-decoration: none; color: black;">
+                                        <t t-esc="nl_items[row][col][0].ticket_number"/>
+                                    </a>
+                                </div>
+                            </t><t t-else="">
+                                <div class="next-in-line-item"/>
+                            </t>
+                        </t>
+                    </div>
+                </t>
+
+                <div class="wait-time">
+                    Estimated Wait Time<br/>
+                    <t t-esc="wait"/>
+                </div>
+
+            </div>
+
+            <div class="right-box">
+                <div class="title-text">
+                    Now Serving
+                </div>
+                <div class="hdiv1"/>
+
+                <div class="now-serving1">
+                    <t t-if="now_serving[0]">
+                        <a t-att-href="now_serving[1]" style="text-decoration: none; color: black;">
+                            <t t-esc="('%s' % now_serving[0].ticket_number)[:5]"/>
+                        </a>
+                        <!-- <t t-esc="('%s' % now_serving[0].ticket_number)[:5]"/> -->
+                    </t><t t-else="">
+                        ---
+                    </t>                
+                </div>
+
+                <t t-foreach="range(0,2)" t-as="row">
+                    <div class="next-in-line">
+                        <t t-foreach="range(0,2)" t-as="col">
+                            <t t-if="ns_items[row][col][0]">
+                                <div class="next-in-line-item bg-green">
+                                    <a t-att-href="ns_items[row][col][1]" style="text-decoration: none; color: black;">
+                                        <t t-esc="('%s' % ns_items[row][col][0].ticket_number)[:5]"/>
+                                    </a>
+                                    <!-- <t t-esc="('%s' % ns_items[row][col][0].ticket_number)[:5]"/> -->
+                                </div>
+                            </t><t t-else="">
+                                <div class="next-in-line-item"/>
+                            </t>
+                        </t>
+                    </div>
+                </t>
+            </div>
+        </div>
+
+    </template>
+
+
+    <template id="recruitment_queue" name="Recruitment Queue">
+        <html>
+            <head>
+                <title>Recruitment Queue</title>
+                <!-- <link href="/ez_recruitment_queue/static/src/bootstrap.min.css" rel="stylesheet"/> -->
+                <link href="/ez_recruitment_queue/static/src/style.css" rel="stylesheet"/>
+                <script src="/web/static/lib/jquery/jquery.js" type="text/javascript"></script>
+            </head>
+            <body>
+                <t t-call="ez_recruitment_queue.recruitment_queue_body"/>
+            </body>
+        </html>
+    </template>
+
+    <!-- ################################################### -->
+
+    <!-- <template id="ez_recruitment_queue.queue_display_template2" inherit_id="portal.portal_my_home">
+        <xpath expr="//*[hasclass('o_portal_my_home')]" position="before">
+            Test 1234
+        </xpath>
+    </template> -->
+
+    <template id="recruitment_queue_websocket" name="Queue Display Websocket Template">
+        <html>
+            <head>
+                <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
+                <link href="/ez_recruitment_queue/static/src/style.css" rel="stylesheet"/>
+                <t t-call-assets="ez_recruitment_queue.queue_assets"/>
+            </head>
+            <body>
+                <t t-call="ez_recruitment_queue.recruitment_queue_body"/>
+            </body>
+        </html>
+    </template>
+
+    <!-- ####################### -->
+ 
+    <template id="test" name="Queue Display Websocket Template">
+        <html>
+            <head>
+                <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
+                <link href="/ez_recruitment_queue/static/src/style.css" rel="stylesheet"/>
+                <t t-call-assets="ez_recruitment_queue.queue_assets"/>
+            </head>
+            <body>
+                <div style="padding-top: 50px;"/>
+                <center>
+                    <form action="/rb_test" method="post">
+                        <label for="fname">First name:</label>
+                        <input type="text" id="fname" name="fname" t-att-value="fname"/><br/><br/>
+                        <label for="lname">Last name:</label>
+                        <input type="text" id="lname" name="lname" t-att-value="lname"/><br/><br/>
+                        <input type="submit" value="Submit"/>
+                    </form>
+                </center>
+            </body>
+        </html>
+    </template>
+
+    <!-- ########################## -->
+
+    <template id="portal_kiosk" name="Queue Display Kiosk">
+        <html>
+            <head>
+                <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
+                <link href="/ez_recruitment_queue/static/src/style.css" rel="stylesheet"/>
+                <script src="/ez_recruitment_queue/static/src/common.js"></script>
+                <t t-call-assets="ez_recruitment_queue.kiosk_assets"/>
+            </head>
+            <body style="padding:0, margin:0">
+                <div class="kiosk-title">
+                    <div class="container kiosk-title-text">
+                        Available Job Positions
+                    </div>
+                </div>
+
+                <br/>
+                <div class="container job-listing">
+                    <div class="row">
+                        <t t-foreach="jobs" t-as="j">
+                            <div class="col-sm-4" t-att-onclick="'goto_page(%s);' % j.id">
+                                <div class="kiosk-block m-2">
+                                    <div t-esc="j.name"/>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </body>
+        </html>
+    </template>
+
+
+    <template id="portal_apply_kiosk" name="Applicant Entry Kiosk">
+        <html>
+            <head>
+                <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
+                <link href="/ez_recruitment_queue/static/src/style.css" rel="stylesheet"/>
+                <script src="/ez_recruitment_queue/static/src/common.js"></script>
+                <t t-call-assets="ez_recruitment_queue.kiosk_assets"/>
+            </head>
+            <body style="padding:0; margin:0;">
+                <div class="kiosk-title">
+                    <div class="container kiosk-title-text">
+                        <t t-esc="job_rec.name"/>
+                    </div>
+                </div>
+
+                <t t-if="not submitted">
+                    <br/>
+                    <div class="d-flex align-items-center justify-content-center info-title">
+                        <div>
+                            Applicant Information
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="form-div">
+                            <form method="post">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input class="form-control" id="partner_name" name="partner_name" 
+                                        autocomplete="off" autocorrect="off"
+                                        placeholder="Enter name"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mobile</label>
+                                    <input class="form-control" id="partner_mobile" name="partner_mobile" 
+                                        autocomplete="off" autocorrect="off"
+                                        placeholder="Enter mobile"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control" id="email_from" name="email_from" 
+                                        autocomplete="off" autocorrect="off"
+                                        aria-describedby="emailHelp" placeholder="Enter email"/>
+                                </div>
+                                <div>
+                                    <button type="submit" id="id_cancel" name="id_cancel" 
+                                        class="btn btn-dark btn-lg btn-block" value="1">Cancel</button>
+                                </div>
+                                <div>
+                                    <button type="submit" id="id_submit" name="id_submit" 
+                                        class="btn btn-primary btn-lg btn-block submit-btn" value="1">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </t><t t-else="">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="mt-2 d-flex align-items-center justify-content-center info-title">
+                        <div>
+                            Printing Ticket
+                        </div>
+                        <br/>
+                    </div>
+                    <br/>
+                    <div class="mt-2 d-flex align-items-center justify-content-center">
+                        <form url="/recruitment_kiosk" method="post">
+                            <button type="submit" id="id_cancel" name="id_cancel" value="1"
+                                style="width: 400px;" 
+                                class="btn btn-primary btn-lg btn-block submit-btn">Return</button>
+                        </form>
+                    </div>
+                </t>
+            </body>
+        </html>
+    </template>
+
+    <!-- ######################## -->
+
+    <template id="kiosk_html_headers" name="Kiosk HTML headers">
+        <html>
+            <head>
+                <link href="/web/static/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+                <link href="/ez_recruitment_queue/static/src/kiosk_style.css" rel="stylesheet"/>
+                <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
+                <script src="/ez_recruitment_queue/static/src/common.js"></script>
+            </head>
+            <body>
+                <div class="kiosk-title">
+                    <div class="kiosk-title-text">
+                        <t t-esc="template_title"/>
+                    </div>
+                </div>
+                <div class="bottom-content">
+                    <t t-out="0"/>
+                </div>
+            </body>
+        </html>
+    </template>
+
+    <template id="kiosk_main_applicants" name="Kiosk Main Applicants">
+        <t t-set="template_title" t-value="'Available Job Positions'"/>
+        <t t-call="ez_recruitment_queue.kiosk_html_headers">
+            <form method="post">
+                <div class="app-container-vcenter">
+                    <div class="container mt-1">
+                        <div class="row">
+                            <t t-foreach="jobs" t-as="j">
+                                <div class="col-sm-4 job-listing">
+                                    <div class="mb-3">
+                                        <button type="submit"
+                                            name="selected_job_id"
+                                            t-att-value="j.id"
+                                            class="btn btn-primary btn-lg btn-block app-button">
+                                            <div t-esc="j.name"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </t>
+    </template>
+
+    <template id="kiosk_applicant_entry" name="Kiosk Applicant Entry">
+        <t t-set="template_title" t-value="job_id.name"/>
+        <t t-call="ez_recruitment_queue.kiosk_html_headers">
+            <div class="app-container-vcenter">
+                <div class="d-flex align-items-center justify-content-center info-title">
+                    <div>
+                        Applicant Information
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="form-div">
+                        <form method="post">
+                            <input type="hidden" name="job_id" t-att-value="job_id.id"/>
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input class="form-control" id="partner_name" name="partner_name" 
+                                    placeholder="Enter name"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile</label>
+                                <input class="form-control" id="partner_mobile" name="partner_mobile" 
+                                    placeholder="Enter mobile"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" id="email_from" name="email_from" 
+                                    aria-describedby="emailHelp" placeholder="Enter email"/>
+                            </div>
+                            <div>
+                                <button type="cancel" name="btn_cancel" 
+                                    class="btn btn-dark btn-lg btn-block" 
+                                    value="1">
+                                    Cancel
+                                </button>
+                            </div>
+                            <div>
+                                <button type="submit" name="btn_submit" 
+                                    class="btn btn-primary btn-lg btn-block submit-btn" 
+                                    value="1">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="kiosk_printing" name="Kiosk Applicant Entry">
+        <t t-set="template_title" t-value="'Thank You'"/>
+        <t t-call="ez_recruitment_queue.kiosk_html_headers">
+            <div class="app-container-vcenter">
+                <div class="d-flex align-items-center justify-content-center info-title">
+                    <div>
+                        Printing Ticket #<t t-esc="ticket_number"/>
+                    </div>
+                    <br/>
+                </div>
+                <br/>
+
+                <center>
+                    <div class="ticket align-items-center justify-content-center">
+                        <h1>
+                            <t t-esc="ticket_number"/>
+                        </h1>
+                        <t t-esc="dt"/>
+                    </div>
+                </center>
+                <br/>
+                <br/>
+
+                <div class="mt-2 d-flex align-items-center justify-content-center">
+                    <form url="/recruitment_kiosk" method="post" name="returnForm">
+                        <button type="submit"
+                            style="width: 400px;" 
+                            class="btn btn-primary btn-lg btn-block submit-btn">Return</button>
+                        <input type="hidden" id="print_data" t-att-value="print_data"/>
+                        <script>
+                            function kioskPrint(value) {
+                                console.log("PRINT:", value);
+                                Android.kioskPrint(value);
+                            }
+
+                            var el = document.getElementById("print_data");
+                            window.setTimeout(function() { document.returnForm.submit(); }, 5000);
+                            kioskPrint(el.value);
+                        </script>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

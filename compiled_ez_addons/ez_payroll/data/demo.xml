@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =======================================
+EzTech Software & Consultancy Inc. (c) 2021
+======================================== -->
+<odoo>
+
+  <!-- employees -->
+  <function model="hr.employee" name="create_demo_data"/>
+
+  <!-- other deductions -->
+  <function model="hr.ph.pay.deduction.entry" name="create_demo_data">
+    <value eval="time.strftime('%Y-%m-2')"/>
+    <value eval="time.strftime('Canteen %b %Y A')"/>
+  </function>
+
+  <function model="hr.ph.pay.deduction.entry" name="create_demo_data">
+    <value eval="time.strftime('%Y-%m-2')"/>
+    <value eval="time.strftime('Union Dues %b %Y A')"/>
+  </function>
+
+  <function model="hr.ph.pay.deduction.entry" name="create_demo_data">
+    <value eval="time.strftime('%Y-%m-18')"/>
+    <value eval="time.strftime('Canteen %b %Y B')"/>
+  </function>
+
+  <function model="hr.ph.pay.deduction.entry" name="create_demo_data">
+    <value eval="time.strftime('%Y-%m-18')"/>
+    <value eval="time.strftime('Union Dues %b %Y B')"/>
+  </function>
+
+  <!-- loans -->
+  <function model="hr.ph.loan" name="create_demo_data">
+    <value eval="(DateTime.today() - relativedelta(months=1))"/>
+    <value>A001</value>
+  </function>
+
+  <!-- worksheet -->
+  <function model="ez.work.summary.sheet" name="create_demo_data">
+    <value eval="time.strftime('Adjustments %b %Y')"/>
+    <value eval="time.strftime('%Y-%m-1')"/>
+    <value eval="False"/>
+  </function>
+
+</odoo>
